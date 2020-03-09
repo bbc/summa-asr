@@ -1,5 +1,5 @@
 ARG MODEL_IMAGE
-ARG ENGINE_VERSION
+ARG ENGINE_VERSION=latest
 FROM $MODEL_IMAGE as model
 FROM summaplatform/asr-engine:${ENGINE_VERSION}
 COPY --from=model /model /model
@@ -10,5 +10,6 @@ ENV LANG C.UTF-8
 ENV PYTHONUNBUFFERED y
 
 WORKDIR /opt/app/
+ADD engine /opt/app/engine
 # alternative approach to unbuffered stdout, not necessary if PYTHONUNBUFFERED is defined
 CMD ["/usr/bin/env", "python3", "-u", "/opt/app/rabbitmq.py"]
